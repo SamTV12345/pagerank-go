@@ -18,25 +18,29 @@ func doMatrixMultiplication(matrix [][]float64, vector []float64) ([]float64, er
 
 	for i := 0; i < matrixRows; i++ {
 		for j := 0; j < matrixCols; j++ {
-			println(matrix[i][j], "*", vector[j])
-			result[i] += matrix[i][j] * vector[j]
+			var innerMult = matrix[j][i] * vector[j]
+			result[i] += innerMult
 		}
+	}
+
+	for i := 0; i < len(result); i++ {
+		result[i] = math.Round(result[i]*100) / 100
 	}
 
 	return result, nil
 }
 
 func calcDeltaOfArrays(array1 []float64, array2 []float64) float64 {
-	if array2 == nil {
+	if array2 == nil || array1 == nil {
 		return 1000
 	}
-	var sumOfArray1 float64
-	var sumOfArray2 float64
+	delta := 0.0
+
 	for i := 0; i < len(array1); i++ {
-		sumOfArray1 += array1[i]
-		sumOfArray2 += array2[i]
+		diff := math.Abs(array1[i] - array2[i])
+		delta += diff
 	}
-	return math.Abs(sumOfArray1 - sumOfArray2)
+	return delta
 }
 
 func main() {
@@ -85,16 +89,24 @@ func main() {
 	// pi 0
 	piprev := []float64{0.25, 0.25, 0.25, 0.25}
 	//pi 1
+	var pinext []float64
+	var err error
+	var counter = 1
 
-	// pi n+1
-	var pinext, err = doMatrixMultiplication(powerMatrix, piprev)
-
-	fmt.Println("pi n+1: ", pinext)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	for calcDeltaOfArrays(piprev, pinext) > 0.01 {
+		if pinext != nil {
+			piprev = pinext
+		}
+		pinext, err = doMatrixMultiplication(powerMatrix, piprev)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Println("pi", counter, " = ", pinext)
+		fmt.Println("pi", counter, " = ", piprev)
+		fmt.Println("delta = ", calcDeltaOfArrays(piprev, pinext))
+		counter++
 	}
-	piprev = pinext
 }
 
 func getOut(vec []int) int {

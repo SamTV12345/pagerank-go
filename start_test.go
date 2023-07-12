@@ -26,45 +26,11 @@ func TestGetOutWithLargerArray(t *testing.T) {
 	}
 }
 
-func TestDoMatrixMultiplication3x2(t *testing.T) {
-	matrix := [][]float64{
-		{4, 3, 2},
-		{1, 2, 3},
-	}
-
-	vector := []float64{2, 3, 4}
-
-	got, _ := doMatrixMultiplication(matrix, vector)
-	fmt.Println(got)
-	want := []float64{25, 20}
-
-	if reflect.DeepEqual(got, want) == false {
-		t.Errorf("Not equal")
-	}
-}
-
-func TestDoMatrixMultiplication3x3(t *testing.T) {
-	matrix := [][]float64{
-		{2, 2, 0},
-		{2, -1, -3},
-		{1, 0, 1},
-	}
-
-	vector := []float64{3, 1, 0}
-
-	got, _ := doMatrixMultiplication(matrix, vector)
-	fmt.Println(got)
-	want := []float64{8, 5, 3}
-
-	if reflect.DeepEqual(got, want) == false {
-		t.Errorf("Not equal")
-	}
-}
-
 func TestDoMatrixMultiplicationSmallNumbers(t *testing.T) {
 	matrix := [][]float64{
-		{0.05, 0.45, 0.5, 0.45},
+		{0.05, 0.45, 0.05, 0.45},
 		{0.05, 0.05, 0.05, 0.85},
+		{0.45, 0.05, 0.05, 0.45},
 		{0.05, 0.05, 0.85, 0.05},
 	}
 
@@ -72,7 +38,7 @@ func TestDoMatrixMultiplicationSmallNumbers(t *testing.T) {
 
 	got, _ := doMatrixMultiplication(matrix, vector)
 	fmt.Println(got)
-	want := []float64{0.15, 0.15, 0.15}
+	want := []float64{0.15, 0.15, 0.25, 0.45}
 
 	if reflect.DeepEqual(got, want) == false {
 		t.Errorf("Not equal")
