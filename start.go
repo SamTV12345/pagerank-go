@@ -36,19 +36,29 @@ func calcDeltaOfArrays(array1 []float64, array2 []float64) float64 {
 		diff := math.Pow(array1[i]-array2[i], 2)
 		delta += diff
 	}
-	return math.Sqrt(delta)
+	return delta
 }
 
 func main() {
 
 	// input data
-	var epsilon = 0.2
+	/*var epsilon = 0.2
 	var adjacencyMatrix = [][]int{
 		{0, 1, 1, 0, 0},
 		{0, 0, 0, 1, 1},
 		{0, 1, 0, 0, 0},
 		{0, 0, 1, 0, 0},
 		{0, 0, 1, 0, 0},
+	}*/
+
+	// Lecture data
+	var epsilon = 0.2
+
+	var adjacencyMatrix = [][]int{
+		{0, 1, 0, 1},
+		{0, 0, 0, 1},
+		{1, 0, 0, 1},
+		{0, 0, 1, 0},
 	}
 
 	// power matrix - contains probabilities of transition from one node to another
@@ -60,17 +70,8 @@ func main() {
 	piprev := make([]float64, countOfNodes)
 
 	for i := 0; i < countOfNodes; i++ {
-		piprev[i] = 0.2
+		piprev[i] = 0.25
 	}
-
-	/*var epsilon = 0.2
-
-	var adjacencyMatrix = [][]int{
-		{0, 1, 0, 1},
-		{0, 0, 0, 1},
-		{1, 0, 0, 1},
-		{0, 0, 1, 0},
-	}*/
 
 	// probability of selecting a node without an edge (jump to random node)
 	var noEdge = epsilon / float64(countOfNodes)
@@ -93,7 +94,7 @@ func main() {
 	var err error
 	var counter = 1
 
-	for calcDeltaOfArrays(piprev, pinext) > 0.01 {
+	for calcDeltaOfArrays(piprev, pinext) > math.Pow(10, -5) {
 		if pinext != nil {
 			piprev = pinext
 		}
@@ -103,6 +104,7 @@ func main() {
 			os.Exit(1)
 		}
 		printVecWithTwoDecimals(pinext, counter)
+
 		counter++
 	}
 }
