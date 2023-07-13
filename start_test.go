@@ -40,8 +40,25 @@ func TestDoMatrixMultiplicationSmallNumbers(t *testing.T) {
 	fmt.Println(got)
 	want := []float64{0.15, 0.15, 0.25, 0.45}
 
-	if reflect.DeepEqual(got, want) == false {
-		t.Errorf("Not equal")
+	if reflect.DeepEqual(got, want) {
+		t.Errorf("Not equal %f", got)
+	}
+}
+
+func TestLectureData(t *testing.T) {
+	var epsilon = 0.2
+
+	var adjacencyMatrix = [][]int{
+		{0, 1, 0, 1},
+		{0, 0, 0, 1},
+		{1, 0, 0, 1},
+		{0, 0, 1, 0},
+	}
+
+	calculation, err := runCalculation(adjacencyMatrix, epsilon)
+
+	if !reflect.DeepEqual(calculation, 10) || err != nil {
+		t.Errorf("The rounds should be 10")
 	}
 }
 

@@ -42,24 +42,34 @@ func calcDeltaOfArrays(array1 []float64, array2 []float64) float64 {
 func main() {
 
 	// input data
-	/*var epsilon = 0.2
+	var epsilon = 0.2
 	var adjacencyMatrix = [][]int{
 		{0, 1, 1, 0, 0},
 		{0, 0, 0, 1, 1},
 		{0, 1, 0, 0, 0},
 		{0, 0, 1, 0, 0},
 		{0, 0, 1, 0, 0},
-	}*/
-
-	// Lecture data
-	var epsilon = 0.2
-
-	var adjacencyMatrix = [][]int{
-		{0, 1, 0, 1},
-		{0, 0, 0, 1},
-		{1, 0, 0, 1},
-		{0, 0, 1, 0},
 	}
+
+	/*
+		// Lecture data
+		var epsilon = 0.2
+
+		var adjacencyMatrix = [][]int{
+			{0, 1, 0, 1},
+			{0, 0, 0, 1},
+			{1, 0, 0, 1},
+			{0, 0, 1, 0},
+		}
+	*/
+	calculation, err := runCalculation(adjacencyMatrix, epsilon)
+	if err != nil {
+		return
+	}
+	fmt.Println("Calculation:", calculation)
+}
+
+func runCalculation(adjacencyMatrix [][]int, epsilon float64) (counterToReturn int, errorReturned error) {
 
 	// power matrix - contains probabilities of transition from one node to another
 	var powerMatrix = make([][]float64, len(adjacencyMatrix))
@@ -70,7 +80,7 @@ func main() {
 	piprev := make([]float64, countOfNodes)
 
 	for i := 0; i < countOfNodes; i++ {
-		piprev[i] = 0.25
+		piprev[i] = 0.2
 	}
 
 	// probability of selecting a node without an edge (jump to random node)
@@ -87,12 +97,10 @@ func main() {
 		}
 	}
 
-	fmt.Println("Power matrix: ", powerMatrix)
-
 	//pi 1
 	var pinext []float64
 	var err error
-	var counter = 1
+	var counter = 0
 
 	for calcDeltaOfArrays(piprev, pinext) > math.Pow(10, -5) {
 		if pinext != nil {
@@ -107,6 +115,7 @@ func main() {
 
 		counter++
 	}
+	return counter, err
 }
 
 func printVecWithTwoDecimals(array []float64, counter int) {
