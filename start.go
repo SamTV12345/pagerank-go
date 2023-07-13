@@ -23,10 +23,6 @@ func doMatrixMultiplication(matrix [][]float64, vector []float64) ([]float64, er
 		}
 	}
 
-	for i := 0; i < len(result); i++ {
-		result[i] = math.Round(result[i]*100) / 100
-	}
-
 	return result, nil
 }
 
@@ -37,10 +33,10 @@ func calcDeltaOfArrays(array1 []float64, array2 []float64) float64 {
 	delta := 0.0
 
 	for i := 0; i < len(array1); i++ {
-		diff := math.Abs(array1[i] - array2[i])
+		diff := math.Pow(array1[i]-array2[i], 2)
 		delta += diff
 	}
-	return delta
+	return math.Sqrt(delta)
 }
 
 func main() {
@@ -102,11 +98,17 @@ func main() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Println("pi", counter, " = ", pinext)
-		fmt.Println("pi", counter, " = ", piprev)
-		fmt.Println("delta = ", calcDeltaOfArrays(piprev, pinext))
+		printVecWithTwoDecimals(pinext, counter)
 		counter++
 	}
+}
+
+func printVecWithTwoDecimals(array []float64, counter int) {
+	print(counter, ": ")
+	for i := 0; i < len(array); i++ {
+		fmt.Printf("%.2f, ", math.Round(array[i]*100)/100)
+	}
+	fmt.Println()
 }
 
 func getOut(vec []int) int {
