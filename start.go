@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math"
-	"os"
 )
 
 func doMatrixMultiplication(matrix [][]float64, vector []float64) ([]float64, error) {
@@ -36,6 +35,8 @@ func calcDeltaOfArrays(array1 []float64, array2 []float64) float64 {
 		diff := math.Pow(array1[i]-array2[i], 2)
 		delta += diff
 	}
+
+	//return math.Sqrt(delta)
 	return delta
 }
 
@@ -60,8 +61,8 @@ func main() {
 			{0, 0, 0, 1},
 			{1, 0, 0, 1},
 			{0, 0, 1, 0},
-		}
-	*/
+		}*/
+
 	calculation, err := runCalculation(adjacencyMatrix, epsilon)
 	if err != nil {
 		return
@@ -80,7 +81,7 @@ func runCalculation(adjacencyMatrix [][]int, epsilon float64) (counterToReturn i
 	piprev := make([]float64, countOfNodes)
 
 	for i := 0; i < countOfNodes; i++ {
-		piprev[i] = 0.2
+		piprev[i] = 1 / float64(countOfNodes)
 	}
 
 	// probability of selecting a node without an edge (jump to random node)
@@ -101,19 +102,16 @@ func runCalculation(adjacencyMatrix [][]int, epsilon float64) (counterToReturn i
 	var pinext []float64
 	var err error
 	var counter = 0
-
+	printVecWithTwoDecimals(piprev, counter)
 	for calcDeltaOfArrays(piprev, pinext) > math.Pow(10, -5) {
+		counter++
 		if pinext != nil {
 			piprev = pinext
 		}
 		pinext, err = doMatrixMultiplication(powerMatrix, piprev)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
+
 		printVecWithTwoDecimals(pinext, counter)
 
-		counter++
 	}
 	return counter, err
 }
